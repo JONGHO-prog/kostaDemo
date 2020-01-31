@@ -1,4 +1,4 @@
-package com.naviworks.kosta;
+package com.naviworks.acme;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
