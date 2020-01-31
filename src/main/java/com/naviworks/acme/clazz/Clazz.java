@@ -28,20 +28,21 @@ public class Clazz implements Serializable {
 	@org.hibernate.annotations.GenericGenerator(name="COM_NAVIWORKS_ACME_CLAZZ_CLAZZ_ID_GENERATOR", strategy="native")	
 	private long id;
 	
+	@Enumerated(EnumType.STRING)
+	private com.naviworks.acme.clazz.ClazzStatus clazzStatus;
+	
 	@ManyToOne(targetEntity=com.naviworks.acme.cource.Course.class, fetch=FetchType.LAZY)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.LOCK})	
 	@JoinColumns(value={ @JoinColumn(name="CourseID", referencedColumnName="ID", nullable=false) }, foreignKey=@ForeignKey(name="FKClazz743645"))	
 	private com.naviworks.acme.cource.Course course;
 	
-	@Column(name="Status", nullable=true, length=255)	
-	private String status;
-	
 	@Column(name="EvaluationRate", nullable=false)	
 	private float evaluationRate;
 	
-	@OneToOne(mappedBy="clazz", targetEntity=com.naviworks.acme.clazz.ClazzDay.class, fetch=FetchType.LAZY)	
+	@OneToMany(mappedBy="clazz", targetEntity=com.naviworks.acme.clazz.ClazzDay.class)	
 	@org.hibernate.annotations.Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.LOCK})	
-	private com.naviworks.acme.clazz.ClazzDay clazzDay;
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)	
+	private java.util.Set clazzDay = new java.util.HashSet();
 	
 	private void setId(long value) {
 		this.id = value;
@@ -53,14 +54,6 @@ public class Clazz implements Serializable {
 	
 	public long getORMID() {
 		return getId();
-	}
-	
-	public void setStatus(String value) {
-		this.status = value;
-	}
-	
-	public String getStatus() {
-		return status;
 	}
 	
 	public void setEvaluationRate(float value) {
@@ -79,13 +72,22 @@ public class Clazz implements Serializable {
 		return course;
 	}
 	
-	public void setClazzDay(com.naviworks.acme.clazz.ClazzDay value) {
+	public void setClazzStatus(com.naviworks.acme.clazz.ClazzStatus value) {
+		this.clazzStatus = value;
+	}
+	
+	public com.naviworks.acme.clazz.ClazzStatus getClazzStatus() {
+		return clazzStatus;
+	}
+	
+	public void setClazzDay(java.util.Set value) {
 		this.clazzDay = value;
 	}
 	
-	public com.naviworks.acme.clazz.ClazzDay getClazzDay() {
+	public java.util.Set getClazzDay() {
 		return clazzDay;
 	}
+	
 	
 	public String toString() {
 		return String.valueOf(getId());
